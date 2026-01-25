@@ -16,5 +16,17 @@
   },
   "devDependencies": {
     "nodemon": "^3.1.11"
-  }
+  },
+  "description": "",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/daviandany/subscription-tracker.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/daviandany/subscription-tracker/issues"
+  },
+  "homepage": "https://github.com/daviandany/subscription-tracker#readme"
 }
