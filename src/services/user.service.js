@@ -1,9 +1,9 @@
-const User = require('../models/user.js');
-const bcrypt = require('bcrypt');
+import User from '../models/User.js';
+import bcrypt from 'bcrypt';
 
 const SALT_ROUNDS = 10;
 
-async function createUser({ name, email, password}) {
+export async function createUserService({ name, email, password}) {
     const existingUser = await User.findOne({ where: { email } });
     if (existingUser) {
         throw new Error('email já está em uso');
@@ -18,9 +18,14 @@ async function createUser({ name, email, password}) {
     });
     
     return newUser;
-
 }
 
-module.exports = {
-    createUser
-};
+export async function getById({ id }) {
+    const user = await User.findOne( { where: { id }, attributes: ['id', 'name', 'email'] } )
+
+    if (!user){
+        throw new Error('usuário não encontrado');
+    }
+
+    return user
+}

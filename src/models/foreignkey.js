@@ -1,6 +1,6 @@
 const sequelize = require('../database');
-const User = require('./User');
-const Subscriptions = require('./Subscriptions');
+import User from './User';
+import Subscriptions from './Subscriptions';
 
 User.hasMany(Subscriptions, {
     foreignKey: 'userId',
