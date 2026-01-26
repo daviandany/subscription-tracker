@@ -1,6 +1,6 @@
 const sequelize = require('../database');
-const User = require('User');
-const Subscriptions = require('Subscriptions');
+const User = require('./User');
+const Subscriptions = require('./Subscriptions');
 
 User.hasMany(Subscriptions, {
     foreignKey: 'userId',

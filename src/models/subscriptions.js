@@ -1,9 +1,9 @@
 const { DataTypes } = require('sequelize')
-const sequelize = require('.../database')
+const sequelize = require('../database')
 
 const Subscriptions = sequelize.define('Subscriptions', {
     id: {
-        type: DataTypes.ID,
+        type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
         primaryKey: true 
     },
