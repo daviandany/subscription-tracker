@@ -5,6 +5,7 @@ const SALT_ROUNDS = 10;
 
 export async function createUserService({ name, email, password}) {
     const existingUser = await User.findOne({ where: { email } });
+    
     if (existingUser) {
         throw new Error('email já está em uso');
     }
@@ -28,4 +29,9 @@ export async function getById({ id }) {
     }
 
     return user
+}
+
+export async function getAllUsers() {
+    const users = await User.findAll()
+    return users
 }
