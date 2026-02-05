@@ -23,7 +23,6 @@ export async function createUserService({ name, email, password}) {
 
 export async function getById({ id }) {
     const user = await User.findOne( { where: { id }, attributes: ['id', 'name', 'email'] } )
-
     if (!user){
         throw new Error('usuário não encontrado');
     }
@@ -31,7 +30,8 @@ export async function getById({ id }) {
     return user
 }
 
-export async function getAllUsers() {
-    const users = await User.findAll()
-    return users
+export async function getAllUsers(){
+    const users = await User.findAll();
+
+    return users;
 }
