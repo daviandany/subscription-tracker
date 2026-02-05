@@ -19,13 +19,3 @@ export async function createUserService({ name, email, password}) {
     
     return newUser;
 }
-
-export async function getById({ id }) {
-    const user = await User.findOne( { where: { id }, attributes: ['id', 'name', 'email'] } )
-
-    if (!user){
-        throw new Error('usuário não encontrado');
-    }
-
-    return user
-}
