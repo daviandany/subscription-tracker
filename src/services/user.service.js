@@ -35,3 +35,19 @@ export async function getAllUsers(){
 
     return users;
 }
+
+export async function login({ password, email }){
+    const user = await User.findOne( { where: { email } } )
+
+    if(!user){
+        throw new Error('email ou senha incorreta')
+    }
+
+    const isMatch = await bcrypt.compare(password, user.password)
+
+    if (!isMatch) {
+        throw new Error('email ou senha incorreta')
+    }
+
+    return user
+}

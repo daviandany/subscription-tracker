@@ -1,4 +1,5 @@
-import { createUserService, getById, getAllUsers } from '../services/user.service.js';
+import jwt from 'jsonwebtoken'
+import { createUserService, getById, getAllUsers, login } from '../services/user.service.js';
 
 export async function createUser(req, res) {
     try {
@@ -42,5 +43,35 @@ export async function getAllUsersController(req, res) {
          return res.status(500).json({
             error: error.message
         })
+    }
+}
+
+export async function loginController(req, res) {
+    try {
+        const { email, password } = req.body
+
+        if (!email || !password) {
+            return res.status(400).json({ error: "email ou senha incorreta" })
+        }
+
+        const user = await login( { email, password } )
+
+        const payload = {
+            user: {
+                id: user.id
+            }
+        }
+
+        jwt.sign(
+            payload,
+            process.env.JWT_SECRET,
+            { expiresIn: "1d" },
+            (err, token) => {
+                if (err) throw err
+                res.json({ token })
+            }
+        )
+    } catch (err) {
+        res.status(401).json({ error: err.message })
     }
 }
