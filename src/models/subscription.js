@@ -1,7 +1,7 @@
 import { DataTypes } from 'sequelize';
 import sequelize from '../database/database.js';
 
-const Subscriptions = sequelize.define('Subscriptions', {
+const Subscription = sequelize.define('Subscription', {
     id: {
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
@@ -13,12 +13,12 @@ const Subscriptions = sequelize.define('Subscriptions', {
         allowNull: false,
     },
 
-    valor: {
+    price: {
         type: DataTypes.DECIMAL(10, 2),
         allowNull: false,
     },
 
-    dia: {
+    day: {
         type: DataTypes.INTEGER,
         allowNull: false,
         validate: {
@@ -37,4 +37,4 @@ const Subscriptions = sequelize.define('Subscriptions', {
     }
 });
 
-export default Subscriptions;
+export default Subscription;
