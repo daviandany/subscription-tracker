@@ -7,3 +7,4 @@ subsRouter.post('/subscriptions/create', auth, subscriptionController.createSubs
 subsRouter.get('/subscriptions/get-by-id', auth, subscriptionController.getByIdController)
 subsRouter.get('/subscriptions/get-all', auth, subscriptionController.getAllSubscriptionController)
 export default subsRouter
+
