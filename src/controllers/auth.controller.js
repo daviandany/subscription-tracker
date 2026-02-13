@@ -6,3 +6,4 @@ jwt.sign(payload, process.env.JWT_SECRET, {expiresIn: '1d'},
         res.json( { token })
     }
 )
+
