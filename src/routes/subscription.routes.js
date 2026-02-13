@@ -7,3 +7,5 @@ router.post('/subscription/create-subscription', auth, subscriptionController.cr
 router.get('/subscription/get-by-id', auth, subscriptionController.getByIdController)
 router.get('/subscription/get-all', auth, subscriptionController.getAllSubscriptionController)
 export default router
+
+console.log(router)
