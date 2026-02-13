@@ -15,12 +15,12 @@ module.exports = {
             allowNull: false,
         },
     
-        valor: {
+        price: {
             type: Sequelize.DECIMAL(10, 2),
             allowNull: false,
         },
     
-        dia: {
+        day: {
             type: Sequelize.INTEGER,
             allowNull: false,
             validate: {

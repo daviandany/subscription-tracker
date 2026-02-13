@@ -6,7 +6,7 @@ export async function createUser(req, res) {
         const { name, email, password } = req.body
 
         if (!name || !email || !password){
-            return res.status(400).json( {error : 'corpo inválido'} )
+            return res.status(400).json( {error : 'Corpo inválido'} )
         }
 
         const user = await createUserService( {name, email, password} )

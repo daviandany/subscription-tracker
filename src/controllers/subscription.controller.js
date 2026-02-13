@@ -1,0 +1,48 @@
+import { createSubscriptionService } from '../services/subscription.service.js'
+
+export async function createSubscriptionController(req, res) {
+    try {
+        const { price, day, plataform, category } = req.body;
+        const userId = req.user.id;
+
+       if(!userId || !price || !day || !plataform || !category) {
+        return res.status(400).json({ error: 'Assinatura inválida' })
+       } 
+
+       const subscription = await createSubscriptionService({ userId, price, day, plataform, category })
+       
+       res.status(201).json(subscription)
+    } catch (err) {
+        res.status(400).json( { error: err.message} )
+
+    }
+}
+
+export async function getByIdController(req, res) {
+    try {
+        const { id } = req.query;
+
+        if(!id || id === 0){
+            return res.status(400).json( { error: "id inválida" } )
+        }
+
+        const subscription = await getById( {id} ) 
+        res.status(200).json(subscription)    
+    } catch(error) {
+        return res.status(500).json({
+            error: error.message
+        })
+    }
+}
+
+export async function getAllSubscriptionController(req, res) {
+    try {
+        let subscription = await getAllSubscription()
+        res.status(200).json(subscription)
+    } catch (error){
+        return res.status(500).json({
+            error: error.message
+         })
+    }
+}
+
