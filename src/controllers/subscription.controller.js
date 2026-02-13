@@ -61,3 +61,5 @@ export async function getByIdUserController(req, res) {
         })
     }
 }
+
+console.log('a')
