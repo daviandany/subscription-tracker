@@ -1,4 +1,4 @@
-import { createSubscriptionService } from '../services/subscription.service.js'
+import { createSubscriptionService, getById, getAllSubscription } from '../services/subscription.service.js'
 
 export async function createSubscriptionController(req, res) {
     try {
@@ -14,7 +14,6 @@ export async function createSubscriptionController(req, res) {
        res.status(201).json(subscription)
     } catch (err) {
         res.status(400).json( { error: err.message} )
-
     }
 }
 
