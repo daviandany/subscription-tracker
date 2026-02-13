@@ -2,10 +2,11 @@ import jwt from 'jsonwebtoken'
 
 export default function auth(req, res, next){
 
-    const token = req.header('x-auth-token');
+    const authHeader = req.header('Authorization');
+    const token = authHeader.split(" ")[1];
 
     if (!token) {
-        return res.status(401).json({ msg: "Acesso negado. Token não encontrado" })
+        return res.status(401).json({ message: "Acesso negado. Token não encontrado" })
     }
 
     try {
