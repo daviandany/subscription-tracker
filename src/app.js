@@ -1,6 +1,6 @@
 import express from 'express';
 import userRouter from './routes/user.routes.js';
-import substriptionRouter from './routes/user.routes.js'
+import substriptionRouter from './routes/subscription.routes.js'
 
 const app = express();
 app.use(express.json());

@@ -1,11 +1,11 @@
 import Subscription from "../models/subscription.js";
 
-export async function createSubscriptionService({ userId, price, day, plataform, category }){
+export async function createSubscriptionService({ userId, price, day, platform, category }){
         const subscription = await Subscription.create({
             userId,
             price,
             day,
-            plataform,
+            platform,
             category
         })
         return subscription;
