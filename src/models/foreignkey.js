@@ -4,12 +4,12 @@ import Subscriptions from './Subscriptions';
 
 User.hasMany(Subscriptions, {
     foreignKey: 'userId',
-    as: 'plataform'
+    as: 'subscriptions'
 });
 
 Subscriptions.belongsTo(User, {
     foreignKey: 'userId',
-    as: 'dono'
+    as: 'user'
 });
 
 module.exports = {
