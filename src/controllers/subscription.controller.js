@@ -1,4 +1,4 @@
-import { createSubscriptionService, getById, getAllSubscription } from '../services/subscription.service.js'
+import { createSubscriptionService, getById, getAllSubscription, getByIdUser } from '../services/subscription.service.js'
 
 export async function createSubscriptionController(req, res) {
     try {
@@ -41,7 +41,23 @@ export async function getAllSubscriptionController(req, res) {
     } catch (error){
         return res.status(500).json({
             error: error.message
-         })
+        })
     }
 }
 
+export async function getByIdUserController(req, res) {
+    try {
+        const { userId } = req.query;
+        
+        if (!userId) {
+            return res.status(400).json( { error: "id inválida" } )
+        }
+
+        let subs = await getByIdUser( { userId } )
+        res.status(200).json(subs)
+    } catch (error) {
+        return res.status(500).json({
+            error: error.message
+        })
+    }
+}
