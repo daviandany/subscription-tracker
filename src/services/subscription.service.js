@@ -25,3 +25,8 @@ export async function getAllSubscription() {
     return subscriptions;
 }
 
+export async function getByIdUser({ userId }) {
+    const subscriptions = await Subscription.findAll({ where:  { userId } })
+
+    return subscriptions
+}
