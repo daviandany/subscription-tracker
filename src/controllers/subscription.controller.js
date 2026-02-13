@@ -2,14 +2,14 @@ import { createSubscriptionService } from '../services/subscription.service.js'
 
 export async function createSubscriptionController(req, res) {
     try {
-        const { price, day, plataform, category } = req.body;
+        const { price, day, platform, category } = req.body;
         const userId = req.user.id;
 
-       if(!userId || !price || !day || !plataform || !category) {
+       if(!userId || !price || !day || !platform || !category) {
         return res.status(400).json({ error: 'Assinatura inválida' })
        } 
 
-       const subscription = await createSubscriptionService({ userId, price, day, plataform, category })
+       const subscription = await createSubscriptionService({ userId, price, day, platform, category })
        
        res.status(201).json(subscription)
     } catch (err) {
