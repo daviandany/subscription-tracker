@@ -1,4 +1,4 @@
-const sequelize = require('../database');
+import sequelize from '../database'
 import User from './User';
 import Subscriptions from './Subscriptions';
 
@@ -12,7 +12,7 @@ Subscriptions.belongsTo(User, {
     as: 'user'
 });
 
-module.exports = {
+export default {
     sequelize,
     User,
     Subscriptions

@@ -1,9 +1,15 @@
-const path = require('path');
-require('dotenv').config({
-  path: path.resolve(__dirname, '../../../.env')
-});
+import path from 'path'
+import * as dotenv from 'dotenv';
+import { fileURLToPatch } from 'url';
 
-module.exports = {
+const __filename = fileURLToPatch(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const envPath = path.resolve(__dirname, '../../../.env');
+
+dotenv.config({ path: envPath });
+
+export default {
   development: {
     url: process.env.DATABASE_URL,
     dialect: 'postgres',
