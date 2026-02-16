@@ -444,3 +444,5 @@ export default function LandingPage() {
         </div>
     );
 }
+
+console.log()
