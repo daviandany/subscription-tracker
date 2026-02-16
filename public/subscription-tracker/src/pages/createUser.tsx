@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
-import { DollarSign, ArrowRight, Shield, User, Lock, Mail } from "lucide-react"
+import { DollarSign, ArrowRight, Shield, User, Lock, Mail, AlertCircle, CheckCircle2 } from "lucide-react"
 
 export default function CreateUserPage() {
     const [name, setName] = useState('')
@@ -8,36 +8,79 @@ export default function CreateUserPage() {
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
     const [isLoading, setIsLoading] = useState(false)
-    const [error, setError] = useState('')
+    const [errors, setErrors] = useState<string[]>([])
+    const [success, setSuccess] = useState(false)
     const navigate = useNavigate()
 
+    // Password strength validation
+    const validatePassword = (pwd: string): string[] => {
+        const issues: string[] = []
+        if (pwd.length < 6) issues.push("Mínimo de 6 caracteres")
+        if (!/[A-Z]/.test(pwd)) issues.push("Uma letra maiúscula")
+        if (!/[0-9]/.test(pwd)) issues.push("Um número")
+        return issues
+    }
+
+    const passwordIssues = password ? validatePassword(password) : []
+    const passwordsMatch = password && confirmPassword && password === confirmPassword
+
     async function register() {
-        setError('')
+        const validationErrors: string[] = []
         
-        if (password !== confirmPassword) {
-            setError("As senhas não coincidem")
+        if (!name.trim()) validationErrors.push("Nome é obrigatório")
+        if (!email.trim()) validationErrors.push("Email é obrigatório")
+        if (!password) validationErrors.push("Senha é obrigatória")
+        if (password !== confirmPassword) validationErrors.push("As senhas não coincidem")
+        if (passwordIssues.length > 0) {
+            validationErrors.push(`Senha fraca: ${passwordIssues.join(", ")}`)
+        }
+
+        if (validationErrors.length > 0) {
+            setErrors(validationErrors)
             return
         }
 
-        if (password.length < 6) {
-            setError("A senha deve ter pelo menos 6 caracteres")
-            return
-        }
-
+        setErrors([])
         setIsLoading(true)
 
         try {
-            // TODO: Replace with actual API endpoint
-            // const response = await fetch('http://localhost:3000/api/users/register', { ... })
+            const response = await fetch('http://localhost:3000/api/users', {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    name: name.trim(),
+                    email: email.trim(),
+                    password: password,
+                    confirmPassword: confirmPassword
+                })
+            })
+
+            const data = await response.json()
+
+            if (!response.ok) {
+                // Handle different error scenarios
+                if (response.status === 409) {
+                    setErrors(["Este email já está cadastrado"])
+                } else if (data.errors && Array.isArray(data.errors)) {
+                    setErrors(data.errors)
+                } else if (data.error) {
+                    setErrors([data.error])
+                } else {
+                    setErrors(["Erro ao criar conta. Tente novamente."])
+                }
+                return
+            }
             
-            // Simulating API call
-            await new Promise(resolve => setTimeout(resolve, 1500))
-            
-            // For now, just redirect to login on success
-            navigate('/login')
+            // Success
+            setSuccess(true)
+            setTimeout(() => {
+                navigate('/login')
+            }, 1500)
 
         } catch (error: any) {
-            setError(error.message || "Erro ao criar conta")
+            setErrors(["Erro ao conectar com o servidor. Verifique sua conexão."])
         } finally {
             setIsLoading(false)
         }
@@ -49,44 +92,78 @@ export default function CreateUserPage() {
     }
 
     return (
-        <div className="login-root">
-            {/* ── Ambient glows ── */}
-            <div className="glow glow-top" />
-            <div className="glow glow-bottom" />
+        <div className="min-h-screen bg-[#0d0d0f] flex flex-col items-center relative overflow-hidden font-['DM_Sans','Segoe_UI',sans-serif] text-[#e2e8f0]">
+            
+            {/* Ambient glows */}
+            <div className="absolute -top-[120px] left-1/2 -translate-x-1/2 w-[700px] h-[400px] rounded-full pointer-events-none blur-[80px] bg-[radial-gradient(ellipse_at_center,rgba(139,92,246,0.18)_0%,transparent_70%)]" />
+            <div className="absolute -bottom-[100px] left-1/2 -translate-x-1/2 w-[500px] h-[300px] rounded-full pointer-events-none blur-[80px] bg-[radial-gradient(ellipse_at_center,rgba(139,92,246,0.10)_0%,transparent_70%)]" />
 
-            {/* ── Navbar strip ── */}
-            <nav className="navbar">
-                <a href="/" className="navbar-logo">
-                    <div className="logo-icon">
+            {/* Navbar */}
+            <nav className="w-full max-w-[1200px] flex items-center px-8 py-5 relative z-10">
+                <a href="/" className="flex items-center gap-2 text-lg font-bold text-[#f1f5f9] no-underline tracking-tight">
+                    <div className="w-8 h-8 rounded-lg bg-[#8b5cf6] flex items-center justify-center">
                         <DollarSign size={18} color="#fff" />
                     </div>
                     SubTracker
                 </a>
             </nav>
 
-            {/* ── Card ── */}
-            <main className="card-wrapper">
-                <div className="card animate-slide-up">
+            {/* Card */}
+            <main className="flex-1 flex items-center justify-center px-4 py-6 pb-16 relative z-10 w-full">
+                <div className="w-full max-w-[440px] bg-gradient-to-br from-[#141418] via-[#0f0f13] to-[#121216] border border-[rgba(139,92,246,0.18)] rounded-[20px] p-9 shadow-[0_32px_80px_rgba(0,0,0,0.7),0_0_0_1px_rgba(139,92,246,0.06)_inset,0_1px_0_rgba(139,92,246,0.14)_inset] animate-[slide-up_0.7s_cubic-bezier(0.22,1,0.36,1)_forwards]">
+                    
                     {/* Badge */}
-                    <div className="badge">
+                    <div className="inline-flex items-center gap-1.5 self-start px-3 py-1 rounded-full border border-[rgba(139,92,246,0.25)] bg-[rgba(139,92,246,0.08)] text-[11px] font-medium text-[#a78bfa] tracking-wide mb-6">
                         <Shield size={13} />
                         Cadastro seguro
                     </div>
 
                     {/* Header */}
-                    <div className="card-header">
-                        <h1 className="card-title">Crie sua conta</h1>
-                        <p className="card-subtitle">
+                    <div className="mb-7">
+                        <h1 className="text-[26px] font-extrabold tracking-tight leading-tight text-[#f1f5f9] mb-2">
+                            Crie sua conta
+                        </h1>
+                        <p className="text-sm text-[#64748b] leading-relaxed">
                             Comece a controlar suas assinaturas hoje mesmo
                         </p>
                     </div>
 
-                    <form onSubmit={handleSubmit} className="form">
+                    {/* Success Message */}
+                    {success && (
+                        <div className="flex items-center gap-2.5 px-4 py-3 rounded-xl bg-[rgba(34,197,94,0.08)] border border-[rgba(34,197,94,0.25)] text-[#4ade80] text-sm font-medium mb-4 animate-[fade-in_0.4s_ease-out]">
+                            <CheckCircle2 size={16} className="shrink-0" />
+                            Conta criada com sucesso! Redirecionando...
+                        </div>
+                    )}
+
+                    {/* Error Messages */}
+                    {errors.length > 0 && (
+                        <div className="rounded-xl bg-[rgba(239,68,68,0.07)] border border-[rgba(239,68,68,0.22)] p-4 mb-4 animate-[shake_0.35s_ease-in-out]">
+                            <div className="flex items-start gap-2.5 mb-2">
+                                <AlertCircle size={16} className="text-[#f87171] shrink-0 mt-0.5" />
+                                <span className="text-sm font-semibold text-[#f87171]">
+                                    {errors.length === 1 ? "Erro encontrado" : `${errors.length} erros encontrados`}
+                                </span>
+                            </div>
+                            <ul className="space-y-1.5 pl-6">
+                                {errors.map((error, idx) => (
+                                    <li key={idx} className="text-sm text-[#fca5a5] list-disc">
+                                        {error}
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    )}
+
+                    <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+                        
                         {/* Name */}
-                        <div className="field animate-fade-in-1">
-                            <label htmlFor="input-name" className="label">Nome Completo</label>
-                            <div className="input-group">
-                                <User size={16} className="input-icon" />
+                        <div className="flex flex-col gap-1.5 animate-[fade-in_0.5s_ease-out_0.35s_both]">
+                            <label htmlFor="input-name" className="text-[11px] font-semibold tracking-widest uppercase text-[#64748b]">
+                                Nome Completo
+                            </label>
+                            <div className="relative flex items-center">
+                                <User size={16} className="absolute left-3.5 text-[#64748b] pointer-events-none transition-colors" />
                                 <input
                                     id="input-name"
                                     type="text"
@@ -94,16 +171,21 @@ export default function CreateUserPage() {
                                     value={name}
                                     placeholder="Seu nome"
                                     onChange={(e) => setName(e.target.value)}
-                                    className="input with-icon"
+                                    className="w-full pl-10 pr-4 py-3 rounded-xl text-sm text-[#cbd5e1] bg-[rgba(255,255,255,0.03)] border border-[rgba(139,92,246,0.14)] outline-none transition-all caret-[#8b5cf6]
+                                    hover:bg-[rgba(139,92,246,0.04)] hover:border-[rgba(139,92,246,0.28)]
+                                    focus:bg-[rgba(139,92,246,0.06)] focus:border-[rgba(139,92,246,0.55)] focus:shadow-[0_0_0_3px_rgba(139,92,246,0.08)]
+                                    placeholder:text-[rgba(100,116,139,0.5)]"
                                 />
                             </div>
                         </div>
 
                         {/* Email */}
-                        <div className="field animate-fade-in-2">
-                            <label htmlFor="input-email" className="label">Email</label>
-                            <div className="input-group">
-                                <Mail size={16} className="input-icon" />
+                        <div className="flex flex-col gap-1.5 animate-[fade-in_0.5s_ease-out_0.4s_both]">
+                            <label htmlFor="input-email" className="text-[11px] font-semibold tracking-widest uppercase text-[#64748b]">
+                                Email
+                            </label>
+                            <div className="relative flex items-center">
+                                <Mail size={16} className="absolute left-3.5 text-[#64748b] pointer-events-none transition-colors" />
                                 <input
                                     id="input-email"
                                     type="email"
@@ -111,16 +193,21 @@ export default function CreateUserPage() {
                                     value={email}
                                     placeholder="seu@email.com"
                                     onChange={(e) => setEmail(e.target.value)}
-                                    className="input with-icon"
+                                    className="w-full pl-10 pr-4 py-3 rounded-xl text-sm text-[#cbd5e1] bg-[rgba(255,255,255,0.03)] border border-[rgba(139,92,246,0.14)] outline-none transition-all caret-[#8b5cf6]
+                                    hover:bg-[rgba(139,92,246,0.04)] hover:border-[rgba(139,92,246,0.28)]
+                                    focus:bg-[rgba(139,92,246,0.06)] focus:border-[rgba(139,92,246,0.55)] focus:shadow-[0_0_0_3px_rgba(139,92,246,0.08)]
+                                    placeholder:text-[rgba(100,116,139,0.5)]"
                                 />
                             </div>
                         </div>
 
                         {/* Password */}
-                        <div className="field animate-fade-in-3">
-                            <label htmlFor="input-password" className="label">Senha</label>
-                            <div className="input-group">
-                                <Lock size={16} className="input-icon" />
+                        <div className="flex flex-col gap-1.5 animate-[fade-in_0.5s_ease-out_0.45s_both]">
+                            <label htmlFor="input-password" className="text-[11px] font-semibold tracking-widest uppercase text-[#64748b]">
+                                Senha
+                            </label>
+                            <div className="relative flex items-center">
+                                <Lock size={16} className="absolute left-3.5 text-[#64748b] pointer-events-none transition-colors" />
                                 <input
                                     id="input-password"
                                     type="password"
@@ -128,16 +215,37 @@ export default function CreateUserPage() {
                                     value={password}
                                     placeholder="••••••••"
                                     onChange={(e) => setPassword(e.target.value)}
-                                    className="input with-icon"
+                                    className="w-full pl-10 pr-4 py-3 rounded-xl text-sm text-[#cbd5e1] bg-[rgba(255,255,255,0.03)] border border-[rgba(139,92,246,0.14)] outline-none transition-all caret-[#8b5cf6]
+                                    hover:bg-[rgba(139,92,246,0.04)] hover:border-[rgba(139,92,246,0.28)]
+                                    focus:bg-[rgba(139,92,246,0.06)] focus:border-[rgba(139,92,246,0.55)] focus:shadow-[0_0_0_3px_rgba(139,92,246,0.08)]
+                                    placeholder:text-[rgba(100,116,139,0.5)]"
                                 />
                             </div>
+                            
+                            {/* Password strength indicators */}
+                            {password && (
+                                <div className="flex flex-col gap-1.5 mt-1 px-1">
+                                    {passwordIssues.length === 0 ? (
+                                        <div className="flex items-center gap-1.5 text-xs text-[#4ade80]">
+                                            <CheckCircle2 size={12} />
+                                            Senha forte
+                                        </div>
+                                    ) : (
+                                        <div className="text-xs text-[#f87171]">
+                                            Necessário: {passwordIssues.join(", ")}
+                                        </div>
+                                    )}
+                                </div>
+                            )}
                         </div>
 
                         {/* Confirm Password */}
-                        <div className="field animate-fade-in-4">
-                            <label htmlFor="input-confirm-password" className="label">Confirmar Senha</label>
-                            <div className="input-group">
-                                <Lock size={16} className="input-icon" />
+                        <div className="flex flex-col gap-1.5 animate-[fade-in_0.5s_ease-out_0.5s_both]">
+                            <label htmlFor="input-confirm-password" className="text-[11px] font-semibold tracking-widest uppercase text-[#64748b]">
+                                Confirmar Senha
+                            </label>
+                            <div className="relative flex items-center">
+                                <Lock size={16} className="absolute left-3.5 text-[#64748b] pointer-events-none transition-colors" />
                                 <input
                                     id="input-confirm-password"
                                     type="password"
@@ -145,37 +253,53 @@ export default function CreateUserPage() {
                                     value={confirmPassword}
                                     placeholder="••••••••"
                                     onChange={(e) => setConfirmPassword(e.target.value)}
-                                    className="input with-icon"
+                                    className="w-full pl-10 pr-4 py-3 rounded-xl text-sm text-[#cbd5e1] bg-[rgba(255,255,255,0.03)] border border-[rgba(139,92,246,0.14)] outline-none transition-all caret-[#8b5cf6]
+                                    hover:bg-[rgba(139,92,246,0.04)] hover:border-[rgba(139,92,246,0.28)]
+                                    focus:bg-[rgba(139,92,246,0.06)] focus:border-[rgba(139,92,246,0.55)] focus:shadow-[0_0_0_3px_rgba(139,92,246,0.08)]
+                                    placeholder:text-[rgba(100,116,139,0.5)]"
                                 />
                             </div>
+                            
+                            {/* Password match indicator */}
+                            {confirmPassword && (
+                                <div className="flex items-center gap-1.5 mt-1 px-1 text-xs">
+                                    {passwordsMatch ? (
+                                        <span className="text-[#4ade80] flex items-center gap-1">
+                                            <CheckCircle2 size={12} />
+                                            As senhas coincidem
+                                        </span>
+                                    ) : (
+                                        <span className="text-[#f87171] flex items-center gap-1">
+                                            <AlertCircle size={12} />
+                                            As senhas não coincidem
+                                        </span>
+                                    )}
+                                </div>
+                            )}
                         </div>
-
-                        {/* Error */}
-                        {error && (
-                            <div className="error-box animate-shake">
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
-                                    <circle cx="12" cy="12" r="10" />
-                                    <line x1="12" y1="8" x2="12" y2="12" />
-                                    <line x1="12" y1="16" x2="12.01" y2="16" />
-                                </svg>
-                                {error}
-                            </div>
-                        )}
 
                         {/* Submit */}
                         <button
                             type="submit"
-                            disabled={isLoading}
-                            className="btn-primary animate-fade-in-5"
+                            disabled={isLoading || success}
+                            className="relative flex items-center justify-center gap-2 w-full px-4 py-3.5 rounded-full border-none cursor-pointer text-sm font-bold tracking-wide text-white bg-[#8b5cf6] shadow-[0_0_28px_rgba(139,92,246,0.30),0_1px_0_rgba(255,255,255,0.15)_inset] overflow-hidden transition-all mt-2 animate-[fade-in_0.5s_ease-out_0.55s_both]
+                            hover:bg-[#7c3aed] hover:shadow-[0_0_40px_rgba(139,92,246,0.45),0_1px_0_rgba(255,255,255,0.2)_inset] hover:-translate-y-px
+                            active:scale-95
+                            disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
                         >
-                            <span className="btn-shine" />
+                            <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
                             {isLoading ? (
                                 <>
-                                    <svg className="spinner" width="18" height="18" viewBox="0 0 24 24" fill="none">
+                                    <svg className="animate-spin" width="18" height="18" viewBox="0 0 24 24" fill="none">
                                         <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" opacity="0.25" />
                                         <path fill="currentColor" opacity="0.75" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
                                     </svg>
                                     Criando conta...
+                                </>
+                            ) : success ? (
+                                <>
+                                    <CheckCircle2 size={18} />
+                                    Conta criada!
                                 </>
                             ) : (
                                 <>
@@ -187,321 +311,24 @@ export default function CreateUserPage() {
                     </form>
 
                     {/* Divider */}
-                    <div className="divider">
-                        <span />
-                        <p>Já tem uma conta?</p>
-                        <span />
+                    <div className="flex items-center gap-3 my-5">
+                        <span className="flex-1 h-px bg-[rgba(139,92,246,0.15)]" />
+                        <p className="text-xs text-[#475569] whitespace-nowrap">Já tem uma conta?</p>
+                        <span className="flex-1 h-px bg-[rgba(139,92,246,0.15)]" />
                     </div>
 
                     {/* Login Link */}
-                    <a href="/login" className="btn-secondary">
+                    <a 
+                        href="/login" 
+                        className="flex items-center justify-center w-full py-3 rounded-full border border-[rgba(139,92,246,0.2)] bg-[rgba(139,92,246,0.04)] text-sm font-semibold text-[#a78bfa] no-underline transition-all cursor-pointer
+                        hover:border-[rgba(139,92,246,0.45)] hover:bg-[rgba(139,92,246,0.09)] hover:text-[#c4b5fd]"
+                    >
                         Fazer Login
                     </a>
                 </div>
             </main>
 
             <style>{`
-                /* ─── Reuse Login Styles ─── */
-                *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-                .login-root {
-                    min-height: 100vh;
-                    background: #0d0d0f;
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-                    position: relative;
-                    overflow: hidden;
-                    font-family: 'DM Sans', 'Segoe UI', sans-serif;
-                    color: #e2e8f0;
-                }
-
-                /* ─── Ambient glows ─── */
-                .glow {
-                    position: absolute;
-                    border-radius: 50%;
-                    pointer-events: none;
-                    filter: blur(80px);
-                }
-                .glow-top {
-                    top: -120px;
-                    left: 50%;
-                    transform: translateX(-50%);
-                    width: 700px;
-                    height: 400px;
-                    background: radial-gradient(ellipse at center, rgba(139,92,246,0.18) 0%, transparent 70%);
-                }
-                .glow-bottom {
-                    bottom: -100px;
-                    left: 50%;
-                    transform: translateX(-50%);
-                    width: 500px;
-                    height: 300px;
-                    background: radial-gradient(ellipse at center, rgba(139,92,246,0.10) 0%, transparent 70%);
-                }
-
-                /* ─── Navbar ─── */
-                .navbar {
-                    width: 100%;
-                    max-width: 1200px;
-                    display: flex;
-                    align-items: center;
-                    padding: 20px 32px;
-                    position: relative;
-                    z-index: 10;
-                }
-                .navbar-logo {
-                    display: flex;
-                    align-items: center;
-                    gap: 8px;
-                    font-size: 18px;
-                    font-weight: 700;
-                    color: #f1f5f9;
-                    text-decoration: none;
-                    letter-spacing: -0.01em;
-                }
-                .logo-icon {
-                    width: 32px;
-                    height: 32px;
-                    border-radius: 8px;
-                    background: #8b5cf6;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                }
-
-                /* ─── Card wrapper ─── */
-                .card-wrapper {
-                    flex: 1;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    padding: 24px 16px 64px;
-                    position: relative;
-                    z-index: 10;
-                    width: 100%;
-                }
-
-                /* ─── Card ─── */
-                .card {
-                    width: 100%;
-                    max-width: 420px;
-                    background: linear-gradient(160deg, #141418 0%, #0f0f13 50%, #121216 100%);
-                    border: 1px solid rgba(139,92,246,0.18);
-                    border-radius: 20px;
-                    padding: 40px 36px 36px;
-                    box-shadow:
-                        0 32px 80px rgba(0,0,0,0.7),
-                        0 0 0 1px rgba(139,92,246,0.06) inset,
-                        0 1px 0 rgba(139,92,246,0.14) inset;
-                    display: flex;
-                    flex-direction: column;
-                    gap: 0;
-                }
-
-                /* ─── Badge ─── */
-                .badge {
-                    display: inline-flex;
-                    align-items: center;
-                    gap: 6px;
-                    align-self: flex-start;
-                    padding: 5px 12px;
-                    border-radius: 999px;
-                    border: 1px solid rgba(139,92,246,0.25);
-                    background: rgba(139,92,246,0.08);
-                    font-size: 11px;
-                    font-weight: 500;
-                    color: #a78bfa;
-                    letter-spacing: 0.03em;
-                    margin-bottom: 24px;
-                }
-
-                /* ─── Header ─── */
-                .card-header { margin-bottom: 28px; }
-
-                .card-title {
-                    font-size: 26px;
-                    font-weight: 800;
-                    letter-spacing: -0.03em;
-                    line-height: 1.15;
-                    color: #f1f5f9;
-                    margin-bottom: 8px;
-                }
-
-                .card-subtitle {
-                    font-size: 14px;
-                    color: #64748b;
-                    line-height: 1.5;
-                    font-weight: 400;
-                }
-
-                /* ─── Form ─── */
-                .form { display: flex; flex-direction: column; gap: 16px; }
-
-                .field { display: flex; flex-direction: column; gap: 6px; }
-
-                .label {
-                    font-size: 11px;
-                    font-weight: 600;
-                    letter-spacing: 0.1em;
-                    text-transform: uppercase;
-                    color: #64748b;
-                }
-
-                .input-group {
-                    position: relative;
-                    display: flex;
-                    align-items: center;
-                }
-                
-                .input-icon {
-                    position: absolute;
-                    left: 14px;
-                    color: #64748b;
-                    pointer-events: none;
-                    transition: color 0.2s;
-                    z-index: 2;
-                }
-
-                .input {
-                    width: 100%;
-                    padding: 12px 16px;
-                    border-radius: 10px;
-                    font-size: 14px;
-                    font-weight: 400;
-                    color: #cbd5e1;
-                    background: rgba(255,255,255,0.03);
-                    border: 1px solid rgba(139,92,246,0.14);
-                    outline: none;
-                    transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
-                    caret-color: #8b5cf6;
-                    font-family: inherit;
-                }
-                
-                .input.with-icon {
-                    padding-left: 42px;
-                }
-
-                .input:hover {
-                    background: rgba(139,92,246,0.04);
-                    border-color: rgba(139,92,246,0.28);
-                }
-                
-                .input:focus {
-                    background: rgba(139,92,246,0.06);
-                    border-color: rgba(139,92,246,0.55);
-                    box-shadow: 0 0 0 3px rgba(139,92,246,0.08);
-                }
-                
-                .input:focus + .input-icon,
-                .input-group:focus-within .input-icon {
-                    color: #8b5cf6;
-                }
-
-                /* ─── Error ─── */
-                .error-box {
-                    display: flex;
-                    align-items: center;
-                    gap: 8px;
-                    padding: 10px 14px;
-                    border-radius: 10px;
-                    background: rgba(239,68,68,0.07);
-                    border: 1px solid rgba(239,68,68,0.22);
-                    font-size: 13px;
-                    color: #f87171;
-                    font-weight: 400;
-                }
-
-                /* ─── Primary button ─── */
-                .btn-primary {
-                    position: relative;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    gap: 8px;
-                    width: 100%;
-                    padding: 14px;
-                    border-radius: 999px;
-                    border: none;
-                    cursor: pointer;
-                    font-size: 14px;
-                    font-weight: 700;
-                    letter-spacing: 0.03em;
-                    color: #fff;
-                    background: #8b5cf6;
-                    box-shadow: 0 0 28px rgba(139,92,246,0.30), 0 1px 0 rgba(255,255,255,0.15) inset;
-                    overflow: hidden;
-                    transition: background 0.2s, box-shadow 0.2s, transform 0.15s;
-                    margin-top: 4px;
-                    font-family: inherit;
-                }
-                .btn-primary:hover:not(:disabled) {
-                    background: #7c3aed;
-                    box-shadow: 0 0 40px rgba(139,92,246,0.45), 0 1px 0 rgba(255,255,255,0.2) inset;
-                    transform: translateY(-1px);
-                }
-                .btn-primary:active:not(:disabled) { transform: scale(0.98); }
-                .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
-
-                /* shine sweep */
-                .btn-shine {
-                    position: absolute;
-                    inset: 0;
-                    background: linear-gradient(105deg, transparent 30%, rgba(255,255,255,0.28) 50%, transparent 70%);
-                    transform: translateX(-100%);
-                    transition: transform 0.7s ease;
-                }
-                .btn-primary:hover .btn-shine { transform: translateX(100%); }
-
-                /* ─── Secondary button ─── */
-                .btn-secondary {
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    width: 100%;
-                    padding: 13px;
-                    border-radius: 999px;
-                    border: 1px solid rgba(139,92,246,0.2);
-                    background: rgba(139,92,246,0.04);
-                    font-size: 14px;
-                    font-weight: 600;
-                    color: #a78bfa;
-                    text-decoration: none;
-                    transition: border-color 0.2s, background 0.2s, color 0.2s;
-                    font-family: inherit;
-                    cursor: pointer;
-                }
-                .btn-secondary:hover {
-                    border-color: rgba(139,92,246,0.45);
-                    background: rgba(139,92,246,0.09);
-                    color: #c4b5fd;
-                }
-
-                /* ─── Divider ─── */
-                .divider {
-                    display: flex;
-                    align-items: center;
-                    gap: 12px;
-                    margin: 20px 0 14px;
-                }
-                .divider span {
-                    flex: 1;
-                    height: 1px;
-                    background: rgba(139,92,246,0.15);
-                }
-                .divider p {
-                    font-size: 12px;
-                    color: #475569;
-                    white-space: nowrap;
-                    font-weight: 400;
-                }
-
-                /* ─── Spinner ─── */
-                .spinner {
-                    animation: spin 1s linear infinite;
-                }
-
-                /* ─── Animations ─── */
                 @keyframes slide-up {
                     from { opacity: 0; transform: translateY(32px); }
                     to   { opacity: 1; transform: translateY(0); }
@@ -515,18 +342,6 @@ export default function CreateUserPage() {
                     25%      { transform: translateX(-6px); }
                     75%      { transform: translateX(6px); }
                 }
-                @keyframes spin {
-                    from { transform: rotate(0deg); }
-                    to   { transform: rotate(360deg); }
-                }
-
-                .animate-slide-up { animation: slide-up 0.7s cubic-bezier(0.22,1,0.36,1) forwards; }
-                .animate-fade-in-1 { animation: fade-in 0.5s ease-out 0.35s both; }
-                .animate-fade-in-2 { animation: fade-in 0.5s ease-out 0.4s both; }
-                .animate-fade-in-3 { animation: fade-in 0.5s ease-out 0.45s both; }
-                .animate-fade-in-4 { animation: fade-in 0.5s ease-out 0.5s both; }
-                .animate-fade-in-5 { animation: fade-in 0.5s ease-out 0.55s both; }
-                .animate-shake     { animation: shake 0.35s ease-in-out; }
             `}</style>
         </div>
     )

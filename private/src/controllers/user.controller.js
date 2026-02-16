@@ -3,10 +3,12 @@ import { createUserService, getById, getAllUsers, login } from '../services/user
 
 export async function createUser(req, res) {
     try {
-        const { name, email, password } = req.body
+        const { name, email, password, confirmPassword } = req.body
 
         if (!name || !email || !password){
             return res.status(400).json( {error : 'Corpo inválido'} )
+        }else if(password != confirmPassword){
+            return res.status(400).json( { error: 'Senhas não coincidem' } )
         }
 
         const user = await createUserService( {name, email, password} )
