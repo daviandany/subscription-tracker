@@ -1,40 +1,43 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
-import { DollarSign, ArrowRight, Shield } from "lucide-react"
+import { DollarSign, ArrowRight, Shield, User, Lock, Mail } from "lucide-react"
 
-export default function LoginPage() {
+export default function CreateUserPage() {
+    const [name, setName] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const [confirmPassword, setConfirmPassword] = useState('')
     const [isLoading, setIsLoading] = useState(false)
     const [error, setError] = useState('')
     const navigate = useNavigate()
 
-    async function login() {
+    async function register() {
         setError('')
+        
+        if (password !== confirmPassword) {
+            setError("As senhas não coincidem")
+            return
+        }
+
+        if (password.length < 6) {
+            setError("A senha deve ter pelo menos 6 caracteres")
+            return
+        }
+
         setIsLoading(true)
 
         try {
-            const response = await fetch('http://localhost:3000/api/users/login', {
-                method: "POST",
-                headers: {
-                    "Content-Type": 'application/json',
-                },
-                body: JSON.stringify({
-                    email: email.trim(),
-                    password: password
-                })
-            })
-            const data = await response.json()
-            console.log(data.token)
-
-            if (!response.ok) {
-                throw new Error(data.error || "Erro ao fazer login")
-            }
-
-            navigate('/home')
+            // TODO: Replace with actual API endpoint
+            // const response = await fetch('http://localhost:3000/api/users/register', { ... })
+            
+            // Simulating API call
+            await new Promise(resolve => setTimeout(resolve, 1500))
+            
+            // For now, just redirect to login on success
+            navigate('/login')
 
         } catch (error: any) {
-            setError(error.message || "Erro ao conectar com o servidor")
+            setError(error.message || "Erro ao criar conta")
         } finally {
             setIsLoading(false)
         }
@@ -42,12 +45,11 @@ export default function LoginPage() {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault()
-        login()
+        register()
     }
 
     return (
         <div className="login-root">
-
             {/* ── Ambient glows ── */}
             <div className="glow glow-top" />
             <div className="glow glow-bottom" />
@@ -65,52 +67,87 @@ export default function LoginPage() {
             {/* ── Card ── */}
             <main className="card-wrapper">
                 <div className="card animate-slide-up">
-
                     {/* Badge */}
                     <div className="badge">
                         <Shield size={13} />
-                        Acesso seguro
+                        Cadastro seguro
                     </div>
 
                     {/* Header */}
                     <div className="card-header">
-                        <h1 className="card-title">Bem-vindo de volta</h1>
+                        <h1 className="card-title">Crie sua conta</h1>
                         <p className="card-subtitle">
-                            Entre na sua conta para ver suas assinaturas
+                            Comece a controlar suas assinaturas hoje mesmo
                         </p>
                     </div>
 
                     <form onSubmit={handleSubmit} className="form">
-
-                        {/* Email */}
+                        {/* Name */}
                         <div className="field animate-fade-in-1">
-                            <label htmlFor="input-email" className="label">Email</label>
-                            <input
-                                id="input-email"
-                                type="email"
-                                required
-                                value={email}
-                                placeholder="seu@email.com"
-                                onChange={(e) => setEmail(e.target.value)}
-                                className="input"
-                            />
+                            <label htmlFor="input-name" className="label">Nome Completo</label>
+                            <div className="input-group">
+                                <User size={16} className="input-icon" />
+                                <input
+                                    id="input-name"
+                                    type="text"
+                                    required
+                                    value={name}
+                                    placeholder="Seu nome"
+                                    onChange={(e) => setName(e.target.value)}
+                                    className="input with-icon"
+                                />
+                            </div>
                         </div>
 
-                        {/* Senha */}
+                        {/* Email */}
                         <div className="field animate-fade-in-2">
-                            <div className="label-row">
-                                <label htmlFor="input-password" className="label">Senha</label>
-                                <a href="#" className="forgot-link">Esqueceu?</a>
+                            <label htmlFor="input-email" className="label">Email</label>
+                            <div className="input-group">
+                                <Mail size={16} className="input-icon" />
+                                <input
+                                    id="input-email"
+                                    type="email"
+                                    required
+                                    value={email}
+                                    placeholder="seu@email.com"
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    className="input with-icon"
+                                />
                             </div>
-                            <input
-                                id="input-password"
-                                type="password"
-                                required
-                                value={password}
-                                placeholder="••••••••"
-                                onChange={(e) => setPassword(e.target.value)}
-                                className="input"
-                            />
+                        </div>
+
+                        {/* Password */}
+                        <div className="field animate-fade-in-3">
+                            <label htmlFor="input-password" className="label">Senha</label>
+                            <div className="input-group">
+                                <Lock size={16} className="input-icon" />
+                                <input
+                                    id="input-password"
+                                    type="password"
+                                    required
+                                    value={password}
+                                    placeholder="••••••••"
+                                    onChange={(e) => setPassword(e.target.value)}
+                                    className="input with-icon"
+                                />
+                            </div>
+                        </div>
+
+                        {/* Confirm Password */}
+                        <div className="field animate-fade-in-4">
+                            <label htmlFor="input-confirm-password" className="label">Confirmar Senha</label>
+                            <div className="input-group">
+                                <Lock size={16} className="input-icon" />
+                                <input
+                                    id="input-confirm-password"
+                                    type="password"
+                                    required
+                                    value={confirmPassword}
+                                    placeholder="••••••••"
+                                    onChange={(e) => setConfirmPassword(e.target.value)}
+                                    className="input with-icon"
+                                />
+                            </div>
                         </div>
 
                         {/* Error */}
@@ -129,7 +166,7 @@ export default function LoginPage() {
                         <button
                             type="submit"
                             disabled={isLoading}
-                            className="btn-primary animate-fade-in-3"
+                            className="btn-primary animate-fade-in-5"
                         >
                             <span className="btn-shine" />
                             {isLoading ? (
@@ -138,35 +175,33 @@ export default function LoginPage() {
                                         <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" opacity="0.25" />
                                         <path fill="currentColor" opacity="0.75" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
                                     </svg>
-                                    Entrando...
+                                    Criando conta...
                                 </>
                             ) : (
                                 <>
-                                    Entrar
+                                    Criar Conta
                                     <ArrowRight size={18} />
                                 </>
                             )}
                         </button>
-
                     </form>
 
                     {/* Divider */}
                     <div className="divider">
                         <span />
-                        <p>Novo por aqui?</p>
+                        <p>Já tem uma conta?</p>
                         <span />
                     </div>
 
-                    {/* Sign up */}
-                    <a href="/register" className="btn-secondary">
-                        Criar conta gratuita
+                    {/* Login Link */}
+                    <a href="/login" className="btn-secondary">
+                        Fazer Login
                     </a>
-
                 </div>
             </main>
 
             <style>{`
-                /* ─── Reset / Root ─── */
+                /* ─── Reuse Login Styles ─── */
                 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
                 .login-root {
@@ -305,12 +340,6 @@ export default function LoginPage() {
 
                 .field { display: flex; flex-direction: column; gap: 6px; }
 
-                .label-row {
-                    display: flex;
-                    align-items: center;
-                    justify-content: space-between;
-                }
-
                 .label {
                     font-size: 11px;
                     font-weight: 600;
@@ -319,13 +348,20 @@ export default function LoginPage() {
                     color: #64748b;
                 }
 
-                .forgot-link {
-                    font-size: 11px;
-                    color: rgba(139,92,246,0.6);
-                    text-decoration: none;
-                    transition: color 0.2s;
+                .input-group {
+                    position: relative;
+                    display: flex;
+                    align-items: center;
                 }
-                .forgot-link:hover { color: #8b5cf6; }
+                
+                .input-icon {
+                    position: absolute;
+                    left: 14px;
+                    color: #64748b;
+                    pointer-events: none;
+                    transition: color 0.2s;
+                    z-index: 2;
+                }
 
                 .input {
                     width: 100%;
@@ -341,15 +377,25 @@ export default function LoginPage() {
                     caret-color: #8b5cf6;
                     font-family: inherit;
                 }
-                .input::placeholder { color: rgba(100,116,139,0.5); }
+                
+                .input.with-icon {
+                    padding-left: 42px;
+                }
+
                 .input:hover {
                     background: rgba(139,92,246,0.04);
                     border-color: rgba(139,92,246,0.28);
                 }
+                
                 .input:focus {
                     background: rgba(139,92,246,0.06);
                     border-color: rgba(139,92,246,0.55);
                     box-shadow: 0 0 0 3px rgba(139,92,246,0.08);
+                }
+                
+                .input:focus + .input-icon,
+                .input-group:focus-within .input-icon {
+                    color: #8b5cf6;
                 }
 
                 /* ─── Error ─── */
@@ -476,8 +522,10 @@ export default function LoginPage() {
 
                 .animate-slide-up { animation: slide-up 0.7s cubic-bezier(0.22,1,0.36,1) forwards; }
                 .animate-fade-in-1 { animation: fade-in 0.5s ease-out 0.35s both; }
-                .animate-fade-in-2 { animation: fade-in 0.5s ease-out 0.45s both; }
-                .animate-fade-in-3 { animation: fade-in 0.5s ease-out 0.55s both; }
+                .animate-fade-in-2 { animation: fade-in 0.5s ease-out 0.4s both; }
+                .animate-fade-in-3 { animation: fade-in 0.5s ease-out 0.45s both; }
+                .animate-fade-in-4 { animation: fade-in 0.5s ease-out 0.5s both; }
+                .animate-fade-in-5 { animation: fade-in 0.5s ease-out 0.55s both; }
                 .animate-shake     { animation: shake 0.35s ease-in-out; }
             `}</style>
         </div>
