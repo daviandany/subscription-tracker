@@ -1,5 +1,6 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
+import { DollarSign, ArrowRight, Shield } from "lucide-react"
 
 export default function LoginPage() {
     const [email, setEmail] = useState('')
@@ -45,286 +46,439 @@ export default function LoginPage() {
     }
 
     return (
-        <div className="relative min-h-screen bg-[#050505] flex items-center justify-center p-6 overflow-hidden font-['Jost',sans-serif]">
+        <div className="login-root">
 
-            {/* Fundo com padrão arabesco sutil */}
-            <div className="absolute inset-0 pointer-events-none bg-pattern" />
+            {/* ── Ambient glows ── */}
+            <div className="glow glow-top" />
+            <div className="glow glow-bottom" />
 
-            {/* Orbs animados */}
-            <div className="absolute inset-0 overflow-hidden pointer-events-none">
-                <div className="absolute top-1/5 left-1/5 w-[400px] h-[400px] rounded-full bg-[radial-gradient(circle,rgba(80,130,220,0.12)_0%,transparent_70%)] blur-[60px] animate-float" />
-                <div className="absolute bottom-1/5 right-1/5 w-[350px] h-[350px] rounded-full bg-[radial-gradient(circle,rgba(60,100,200,0.08)_0%,transparent_70%)] blur-[80px] animate-float-delayed" />
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] rounded-full bg-[radial-gradient(circle,rgba(80,130,220,0.06)_0%,transparent_70%)] blur-[60px] animate-pulse-slow" />
-            </div>
-
-            {/* Card Wrapper */}
-            <div className="relative z-10 w-full max-w-[380px]">
-                {/* Glow atrás do card */}
-                <div className="absolute -inset-0.5 rounded-[20px] blur-[16px] opacity-40 animate-pulse-glow bg-[linear-gradient(135deg,rgba(80,130,220,0.25),rgba(50,90,180,0.1),rgba(80,130,220,0.2))]" />
-
-                {/* Glass card */}
-                <div className="relative rounded-[20px] px-8 pt-9 pb-7 animate-slide-up
-                    bg-[linear-gradient(160deg,#131313_0%,#0d0d0d_50%,#111111_100%)]
-                    border border-[rgba(80,130,220,0.18)]
-                    shadow-[0_32px_80px_rgba(0,0,0,0.8),0_0_0_1px_rgba(80,130,220,0.06)_inset,0_1px_0_rgba(80,130,220,0.12)_inset]">
-
-                    {/* Partículas flutuantes */}
-                    <div className="absolute inset-0 overflow-hidden rounded-[20px] pointer-events-none">
-                        <div className="absolute top-[30px] left-[30px] w-0.5 h-0.5 rounded-full bg-[#5082DC] animate-particle-1" />
-                        <div className="absolute top-[60px] right-[40px] w-0.5 h-0.5 rounded-full bg-[#5082DC] animate-particle-2" />
-                        <div className="absolute bottom-[50px] left-[55px] w-0.5 h-0.5 rounded-full bg-[#5082DC] animate-particle-3" />
+            {/* ── Navbar strip ── */}
+            <nav className="navbar">
+                <a href="/" className="navbar-logo">
+                    <div className="logo-icon">
+                        <DollarSign size={18} color="#fff" />
                     </div>
+                    SubTracker
+                </a>
+            </nav>
 
-                    {/* Ornamento superior */}
-                    <div className="flex justify-center mb-5">
-                        <svg width="160" height="12" viewBox="0 0 160 12" fill="none">
-                            <line x1="0" y1="6" x2="60" y2="6" stroke="url(#gLeft)" strokeWidth="0.5" />
-                            <circle cx="80" cy="6" r="3" fill="none" stroke="#5082DC" strokeWidth="0.8" />
-                            <circle cx="80" cy="6" r="1" fill="#5082DC" />
-                            <circle cx="68" cy="6" r="1.5" fill="none" stroke="#5082DC" strokeWidth="0.6" opacity="0.5" />
-                            <circle cx="92" cy="6" r="1.5" fill="none" stroke="#5082DC" strokeWidth="0.6" opacity="0.5" />
-                            <line x1="100" y1="6" x2="160" y2="6" stroke="url(#gRight)" strokeWidth="0.5" />
-                            <defs>
-                                <linearGradient id="gLeft" x1="0" y1="0" x2="60" y2="0">
-                                    <stop offset="0%" stopColor="#5082DC" stopOpacity="0" />
-                                    <stop offset="100%" stopColor="#5082DC" stopOpacity="0.6" />
-                                </linearGradient>
-                                <linearGradient id="gRight" x1="0" y1="0" x2="60" y2="0">
-                                    <stop offset="0%" stopColor="#5082DC" stopOpacity="0.6" />
-                                    <stop offset="100%" stopColor="#5082DC" stopOpacity="0" />
-                                </linearGradient>
-                            </defs>
-                        </svg>
+            {/* ── Card ── */}
+            <main className="card-wrapper">
+                <div className="card animate-slide-up">
+
+                    {/* Badge */}
+                    <div className="badge">
+                        <Shield size={13} />
+                        Acesso seguro
                     </div>
 
                     {/* Header */}
-                    <div className="text-center mb-7">
-                        <div className="inline-flex items-center justify-center w-14 h-14 rounded-full mb-4 animate-bounce-subtle
-                            bg-[linear-gradient(135deg,#3A6AC8_0%,#5E8FE8_40%,#2A50A8_100%)]
-                            shadow-[0_0_0_1px_rgba(80,130,220,0.3),0_8px_24px_rgba(80,130,220,0.2),0_0_40px_rgba(80,130,220,0.1)]">
-                            <svg width="28" height="28" fill="none" stroke="#0a0a0a" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                            </svg>
-                        </div>
-                        <h1 className="font-['Cormorant_Garamond',Georgia,serif] text-[26px] font-medium tracking-[0.04em] text-[#D0DCFF] mb-1.5 leading-tight animate-fade-in">
-                            Bem-vindo de volta
-                        </h1>
-                        <p className="text-[12px] font-light tracking-[0.12em] uppercase text-[rgba(80,130,220,0.55)] m-0 animate-fade-in-delayed">
-                            Entre com suas credenciais
+                    <div className="card-header">
+                        <h1 className="card-title">Bem-vindo de volta</h1>
+                        <p className="card-subtitle">
+                            Entre na sua conta para ver suas assinaturas
                         </p>
                     </div>
 
-                    <form onSubmit={handleSubmit}>
+                    <form onSubmit={handleSubmit} className="form">
+
                         {/* Email */}
-                        <div className="mb-4 animate-fade-in-delayed-2">
-                            <label htmlFor="input-email" className="block text-[10px] font-normal tracking-[0.18em] uppercase text-[rgba(80,130,220,0.6)] mb-2">
-                                Email
-                            </label>
-                            <div className="relative">
-                                <input
-                                    onChange={(e) => setEmail(e.target.value)}
-                                    type="email"
-                                    id="input-email"
-                                    value={email}
-                                    required
-                                    placeholder="seu@email.com"
-                                    className="w-full px-4 py-3 rounded-[10px] text-[14px] font-light tracking-[0.04em] outline-none transition-all duration-300 box-border
-                                        bg-[rgba(255,255,255,0.025)] border border-[rgba(80,130,220,0.15)] text-[#C8D8F8]
-                                        placeholder:text-[rgba(100,140,220,0.3)] placeholder:tracking-[0.06em]
-                                        hover:bg-[rgba(80,130,220,0.04)] hover:border-[rgba(80,130,220,0.25)]
-                                        focus:bg-[rgba(80,130,220,0.06)] focus:border-[rgba(80,130,220,0.5)]
-                                        focus:shadow-[0_0_0_1px_rgba(80,130,220,0.1),0_4px_16px_rgba(80,130,220,0.08)]"
-                                />
-                                <div className="absolute inset-0 rounded-[10px] pointer-events-none bg-[linear-gradient(105deg,rgba(80,130,220,0)_40%,rgba(80,130,220,0.04)_50%,rgba(80,130,220,0)_60%)]" />
-                            </div>
+                        <div className="field animate-fade-in-1">
+                            <label htmlFor="input-email" className="label">Email</label>
+                            <input
+                                id="input-email"
+                                type="email"
+                                required
+                                value={email}
+                                placeholder="seu@email.com"
+                                onChange={(e) => setEmail(e.target.value)}
+                                className="input"
+                            />
                         </div>
 
                         {/* Senha */}
-                        <div className="mb-4 animate-fade-in-delayed-3">
-                            <label htmlFor="input-password" className="block text-[10px] font-normal tracking-[0.18em] uppercase text-[rgba(80,130,220,0.6)] mb-2">
-                                Senha
-                            </label>
-                            <div className="relative">
-                                <input
-                                    onChange={(e) => setPassword(e.target.value)}
-                                    type="password"
-                                    id="input-password"
-                                    value={password}
-                                    required
-                                    placeholder="••••••••"
-                                    className="w-full px-4 py-3 rounded-[10px] text-[14px] font-light tracking-[0.04em] outline-none transition-all duration-300 box-border
-                                        bg-[rgba(255,255,255,0.025)] border border-[rgba(80,130,220,0.15)] text-[#C8D8F8]
-                                        placeholder:text-[rgba(100,140,220,0.3)] placeholder:tracking-[0.06em]
-                                        hover:bg-[rgba(80,130,220,0.04)] hover:border-[rgba(80,130,220,0.25)]
-                                        focus:bg-[rgba(80,130,220,0.06)] focus:border-[rgba(80,130,220,0.5)]
-                                        focus:shadow-[0_0_0_1px_rgba(80,130,220,0.1),0_4px_16px_rgba(80,130,220,0.08)]"
-                                />
-                                <div className="absolute inset-0 rounded-[10px] pointer-events-none bg-[linear-gradient(105deg,rgba(80,130,220,0)_40%,rgba(80,130,220,0.04)_50%,rgba(80,130,220,0)_60%)]" />
+                        <div className="field animate-fade-in-2">
+                            <div className="label-row">
+                                <label htmlFor="input-password" className="label">Senha</label>
+                                <a href="#" className="forgot-link">Esqueceu?</a>
                             </div>
+                            <input
+                                id="input-password"
+                                type="password"
+                                required
+                                value={password}
+                                placeholder="••••••••"
+                                onChange={(e) => setPassword(e.target.value)}
+                                className="input"
+                            />
                         </div>
 
-                        {/* Erro */}
+                        {/* Error */}
                         {error && (
-                            <div className="flex items-center gap-2 rounded-[10px] px-3.5 py-2.5 mb-3.5 text-[12px] font-light tracking-[0.04em] text-[#d4706a] animate-shake
-                                bg-[rgba(180,60,60,0.08)] border border-[rgba(200,80,80,0.2)]">
+                            <div className="error-box animate-shake">
                                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
-                                    <circle cx="12" cy="12" r="10" /><line x1="12" y1="8" x2="12" y2="12" /><line x1="12" y1="16" x2="12.01" y2="16" />
+                                    <circle cx="12" cy="12" r="10" />
+                                    <line x1="12" y1="8" x2="12" y2="12" />
+                                    <line x1="12" y1="16" x2="12.01" y2="16" />
                                 </svg>
                                 {error}
                             </div>
                         )}
 
-                        {/* Botão */}
+                        {/* Submit */}
                         <button
                             type="submit"
                             disabled={isLoading}
-                            className="relative w-full px-5 py-[13px] rounded-[10px] border-none cursor-pointer overflow-hidden transition-all duration-300 mb-5 group
-                                bg-[linear-gradient(135deg,#3A6AC8_0%,#5E8FE8_40%,#2A50A8_100%)]
-                                shadow-[0_4px_20px_rgba(80,130,220,0.25),0_1px_0_rgba(255,255,255,0.15)_inset]
-                                hover:not(:disabled):-translate-y-px hover:not(:disabled):scale-[1.01]
-                                hover:not(:disabled):shadow-[0_8px_30px_rgba(80,130,220,0.35),0_1px_0_rgba(255,255,255,0.2)_inset]
-                                active:not(:disabled):scale-[0.98]
-                                disabled:opacity-50 disabled:cursor-not-allowed
-                                animate-fade-in-delayed-4"
+                            className="btn-primary animate-fade-in-3"
                         >
-                            <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out
-                                bg-[linear-gradient(105deg,transparent_30%,rgba(255,255,255,0.3)_50%,transparent_70%)]" />
-                            <span className="relative flex items-center justify-center gap-2 text-[13px] font-medium tracking-[0.14em] uppercase text-white">
-                                {isLoading ? (
-                                    <>
-                                        <svg className="animate-spin" width="18" height="18" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
-                                        </svg>
-                                        Entrando...
-                                    </>
-                                ) : (
-                                    <>
-                                        Entrar
-                                        <svg className="transition-transform duration-300 group-hover:translate-x-1" width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                                        </svg>
-                                    </>
-                                )}
-                            </span>
+                            <span className="btn-shine" />
+                            {isLoading ? (
+                                <>
+                                    <svg className="spinner" width="18" height="18" viewBox="0 0 24 24" fill="none">
+                                        <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" opacity="0.25" />
+                                        <path fill="currentColor" opacity="0.75" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                                    </svg>
+                                    Entrando...
+                                </>
+                            ) : (
+                                <>
+                                    Entrar
+                                    <ArrowRight size={18} />
+                                </>
+                            )}
                         </button>
 
-                        {/* Links */}
-                        <div className="flex justify-between items-center animate-fade-in-delayed-5">
-                            <a href="#" className="text-[11px] font-light tracking-[0.08em] text-[rgba(100,140,220,0.55)] no-underline transition-all duration-300 hover:text-[#5082DC] hover:tracking-[0.1em]">
-                                Esqueceu a senha?
-                            </a>
-                            <a href="#" className="link-alt text-[11px] font-light tracking-[0.08em] text-[rgba(100,140,220,0.55)] no-underline transition-all duration-300 hover:text-[#5082DC] hover:tracking-[0.1em]">
-                                Criar conta
-                            </a>
-                        </div>
                     </form>
 
-                    {/* Ornamento inferior */}
-                    <div className="mt-6 flex justify-center">
-                        <div className="w-20 h-px bg-[linear-gradient(90deg,transparent,rgba(80,130,220,0.4),transparent)]" />
+                    {/* Divider */}
+                    <div className="divider">
+                        <span />
+                        <p>Novo por aqui?</p>
+                        <span />
                     </div>
+
+                    {/* Sign up */}
+                    <a href="#" className="btn-secondary">
+                        Criar conta gratuita
+                    </a>
+
                 </div>
-            </div>
+            </main>
 
             <style>{`
-                @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=Jost:wght@300;400;500&display=swap');
+                /* ─── Reset / Root ─── */
+                *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-                /* ─── Padrão de fundo arabesco ─── */
-                .bg-pattern {
-                    background-image:
-                        repeating-linear-gradient(45deg, transparent, transparent 60px, rgba(80,130,220,0.025) 60px, rgba(80,130,220,0.025) 61px),
-                        repeating-linear-gradient(-45deg, transparent, transparent 60px, rgba(80,130,220,0.02) 60px, rgba(80,130,220,0.02) 61px);
+                .login-root {
+                    min-height: 100vh;
+                    background: #0d0d0f;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    position: relative;
+                    overflow: hidden;
+                    font-family: 'DM Sans', 'Segoe UI', sans-serif;
+                    color: #e2e8f0;
                 }
 
-                /* ─── Pseudo-elemento do link "Criar conta" ─── */
-                .link-alt { position: relative; }
-                .link-alt::after {
-                    content: '';
+                /* ─── Ambient glows ─── */
+                .glow {
                     position: absolute;
-                    bottom: -2px;
-                    left: 0;
-                    width: 0;
-                    height: 1px;
-                    background: #5082DC;
-                    transition: width 0.3s ease;
+                    border-radius: 50%;
+                    pointer-events: none;
+                    filter: blur(80px);
                 }
-                .link-alt:hover::after { width: 100%; }
+                .glow-top {
+                    top: -120px;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    width: 700px;
+                    height: 400px;
+                    background: radial-gradient(ellipse at center, rgba(139,92,246,0.18) 0%, transparent 70%);
+                }
+                .glow-bottom {
+                    bottom: -100px;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    width: 500px;
+                    height: 300px;
+                    background: radial-gradient(ellipse at center, rgba(139,92,246,0.10) 0%, transparent 70%);
+                }
 
-                /* ─── Keyframes & animações customizadas ─── */
-                @keyframes float {
-                    0%, 100% { transform: translateY(0px) translateX(0px); }
-                    33% { transform: translateY(-20px) translateX(10px); }
-                    66% { transform: translateY(10px) translateX(-10px); }
+                /* ─── Navbar ─── */
+                .navbar {
+                    width: 100%;
+                    max-width: 1200px;
+                    display: flex;
+                    align-items: center;
+                    padding: 20px 32px;
+                    position: relative;
+                    z-index: 10;
                 }
-                @keyframes float-delayed {
-                    0%, 100% { transform: translateY(0px) translateX(0px); }
-                    33% { transform: translateY(15px) translateX(-15px); }
-                    66% { transform: translateY(-10px) translateX(10px); }
+                .navbar-logo {
+                    display: flex;
+                    align-items: center;
+                    gap: 8px;
+                    font-size: 18px;
+                    font-weight: 700;
+                    color: #f1f5f9;
+                    text-decoration: none;
+                    letter-spacing: -0.01em;
                 }
-                @keyframes pulse-slow {
-                    0%, 100% { opacity: 0.1; transform: translate(-50%, -50%) scale(1); }
-                    50% { opacity: 0.2; transform: translate(-50%, -50%) scale(1.1); }
+                .logo-icon {
+                    width: 32px;
+                    height: 32px;
+                    border-radius: 8px;
+                    background: #8b5cf6;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
                 }
-                @keyframes pulse-glow {
-                    0%, 100% { opacity: 0.3; }
-                    50% { opacity: 0.6; }
+
+                /* ─── Card wrapper ─── */
+                .card-wrapper {
+                    flex: 1;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    padding: 24px 16px 64px;
+                    position: relative;
+                    z-index: 10;
+                    width: 100%;
                 }
+
+                /* ─── Card ─── */
+                .card {
+                    width: 100%;
+                    max-width: 420px;
+                    background: linear-gradient(160deg, #141418 0%, #0f0f13 50%, #121216 100%);
+                    border: 1px solid rgba(139,92,246,0.18);
+                    border-radius: 20px;
+                    padding: 40px 36px 36px;
+                    box-shadow:
+                        0 32px 80px rgba(0,0,0,0.7),
+                        0 0 0 1px rgba(139,92,246,0.06) inset,
+                        0 1px 0 rgba(139,92,246,0.14) inset;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 0;
+                }
+
+                /* ─── Badge ─── */
+                .badge {
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 6px;
+                    align-self: flex-start;
+                    padding: 5px 12px;
+                    border-radius: 999px;
+                    border: 1px solid rgba(139,92,246,0.25);
+                    background: rgba(139,92,246,0.08);
+                    font-size: 11px;
+                    font-weight: 500;
+                    color: #a78bfa;
+                    letter-spacing: 0.03em;
+                    margin-bottom: 24px;
+                }
+
+                /* ─── Header ─── */
+                .card-header { margin-bottom: 28px; }
+
+                .card-title {
+                    font-size: 26px;
+                    font-weight: 800;
+                    letter-spacing: -0.03em;
+                    line-height: 1.15;
+                    color: #f1f5f9;
+                    margin-bottom: 8px;
+                }
+
+                .card-subtitle {
+                    font-size: 14px;
+                    color: #64748b;
+                    line-height: 1.5;
+                    font-weight: 400;
+                }
+
+                /* ─── Form ─── */
+                .form { display: flex; flex-direction: column; gap: 16px; }
+
+                .field { display: flex; flex-direction: column; gap: 6px; }
+
+                .label-row {
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                }
+
+                .label {
+                    font-size: 11px;
+                    font-weight: 600;
+                    letter-spacing: 0.1em;
+                    text-transform: uppercase;
+                    color: #64748b;
+                }
+
+                .forgot-link {
+                    font-size: 11px;
+                    color: rgba(139,92,246,0.6);
+                    text-decoration: none;
+                    transition: color 0.2s;
+                }
+                .forgot-link:hover { color: #8b5cf6; }
+
+                .input {
+                    width: 100%;
+                    padding: 12px 16px;
+                    border-radius: 10px;
+                    font-size: 14px;
+                    font-weight: 400;
+                    color: #cbd5e1;
+                    background: rgba(255,255,255,0.03);
+                    border: 1px solid rgba(139,92,246,0.14);
+                    outline: none;
+                    transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
+                    caret-color: #8b5cf6;
+                    font-family: inherit;
+                }
+                .input::placeholder { color: rgba(100,116,139,0.5); }
+                .input:hover {
+                    background: rgba(139,92,246,0.04);
+                    border-color: rgba(139,92,246,0.28);
+                }
+                .input:focus {
+                    background: rgba(139,92,246,0.06);
+                    border-color: rgba(139,92,246,0.55);
+                    box-shadow: 0 0 0 3px rgba(139,92,246,0.08);
+                }
+
+                /* ─── Error ─── */
+                .error-box {
+                    display: flex;
+                    align-items: center;
+                    gap: 8px;
+                    padding: 10px 14px;
+                    border-radius: 10px;
+                    background: rgba(239,68,68,0.07);
+                    border: 1px solid rgba(239,68,68,0.22);
+                    font-size: 13px;
+                    color: #f87171;
+                    font-weight: 400;
+                }
+
+                /* ─── Primary button ─── */
+                .btn-primary {
+                    position: relative;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    gap: 8px;
+                    width: 100%;
+                    padding: 14px;
+                    border-radius: 999px;
+                    border: none;
+                    cursor: pointer;
+                    font-size: 14px;
+                    font-weight: 700;
+                    letter-spacing: 0.03em;
+                    color: #fff;
+                    background: #8b5cf6;
+                    box-shadow: 0 0 28px rgba(139,92,246,0.30), 0 1px 0 rgba(255,255,255,0.15) inset;
+                    overflow: hidden;
+                    transition: background 0.2s, box-shadow 0.2s, transform 0.15s;
+                    margin-top: 4px;
+                    font-family: inherit;
+                }
+                .btn-primary:hover:not(:disabled) {
+                    background: #7c3aed;
+                    box-shadow: 0 0 40px rgba(139,92,246,0.45), 0 1px 0 rgba(255,255,255,0.2) inset;
+                    transform: translateY(-1px);
+                }
+                .btn-primary:active:not(:disabled) { transform: scale(0.98); }
+                .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+
+                /* shine sweep */
+                .btn-shine {
+                    position: absolute;
+                    inset: 0;
+                    background: linear-gradient(105deg, transparent 30%, rgba(255,255,255,0.28) 50%, transparent 70%);
+                    transform: translateX(-100%);
+                    transition: transform 0.7s ease;
+                }
+                .btn-primary:hover .btn-shine { transform: translateX(100%); }
+
+                /* ─── Secondary button ─── */
+                .btn-secondary {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    width: 100%;
+                    padding: 13px;
+                    border-radius: 999px;
+                    border: 1px solid rgba(139,92,246,0.2);
+                    background: rgba(139,92,246,0.04);
+                    font-size: 14px;
+                    font-weight: 600;
+                    color: #a78bfa;
+                    text-decoration: none;
+                    transition: border-color 0.2s, background 0.2s, color 0.2s;
+                    font-family: inherit;
+                    cursor: pointer;
+                }
+                .btn-secondary:hover {
+                    border-color: rgba(139,92,246,0.45);
+                    background: rgba(139,92,246,0.09);
+                    color: #c4b5fd;
+                }
+
+                /* ─── Divider ─── */
+                .divider {
+                    display: flex;
+                    align-items: center;
+                    gap: 12px;
+                    margin: 20px 0 14px;
+                }
+                .divider span {
+                    flex: 1;
+                    height: 1px;
+                    background: rgba(139,92,246,0.15);
+                }
+                .divider p {
+                    font-size: 12px;
+                    color: #475569;
+                    white-space: nowrap;
+                    font-weight: 400;
+                }
+
+                /* ─── Spinner ─── */
+                .spinner {
+                    animation: spin 1s linear infinite;
+                }
+
+                /* ─── Animations ─── */
                 @keyframes slide-up {
-                    from { opacity: 0; transform: translateY(30px); }
-                    to { opacity: 1; transform: translateY(0); }
+                    from { opacity: 0; transform: translateY(32px); }
+                    to   { opacity: 1; transform: translateY(0); }
                 }
                 @keyframes fade-in {
-                    from { opacity: 0; }
-                    to { opacity: 1; }
-                }
-                @keyframes bounce-subtle {
-                    0%, 100% { transform: translateY(0); }
-                    50% { transform: translateY(-5px); }
-                }
-                @keyframes particle-1 {
-                    0%, 100% { transform: translate(0, 0); opacity: 0; }
-                    50% { opacity: 1; }
-                    100% { transform: translate(20px, -30px); }
-                }
-                @keyframes particle-2 {
-                    0%, 100% { transform: translate(0, 0); opacity: 0; }
-                    50% { opacity: 1; }
-                    100% { transform: translate(-25px, -35px); }
-                }
-                @keyframes particle-3 {
-                    0%, 100% { transform: translate(0, 0); opacity: 0; }
-                    50% { opacity: 1; }
-                    100% { transform: translate(30px, -25px); }
+                    from { opacity: 0; transform: translateY(10px); }
+                    to   { opacity: 1; transform: translateY(0); }
                 }
                 @keyframes shake {
                     0%, 100% { transform: translateX(0); }
-                    25% { transform: translateX(-8px); }
-                    75% { transform: translateX(8px); }
+                    25%      { transform: translateX(-6px); }
+                    75%      { transform: translateX(6px); }
                 }
                 @keyframes spin {
                     from { transform: rotate(0deg); }
-                    to { transform: rotate(360deg); }
+                    to   { transform: rotate(360deg); }
                 }
 
-                .animate-float          { animation: float 20s ease-in-out infinite; }
-                .animate-float-delayed  { animation: float-delayed 25s ease-in-out infinite; }
-                .animate-pulse-slow     { animation: pulse-slow 8s ease-in-out infinite; }
-                .animate-pulse-glow     { animation: pulse-glow 4s ease-in-out infinite; }
-                .animate-slide-up       { animation: slide-up 0.8s ease-out forwards; }
-                .animate-bounce-subtle  { animation: bounce-subtle 3s ease-in-out infinite; }
-                .animate-particle-1     { animation: particle-1 4s ease-in-out infinite; }
-                .animate-particle-2     { animation: particle-2 5s ease-in-out infinite 1s; }
-                .animate-particle-3     { animation: particle-3 4.5s ease-in-out infinite 0.5s; }
-                .animate-shake          { animation: shake 0.4s ease-in-out; }
-                .animate-spin           { animation: spin 1s linear infinite; }
-
-                .animate-fade-in            { animation: fade-in 0.6s ease-out 0.2s forwards; opacity: 0; }
-                .animate-fade-in-delayed    { animation: fade-in 0.6s ease-out 0.4s forwards; opacity: 0; }
-                .animate-fade-in-delayed-2  { animation: fade-in 0.6s ease-out 0.5s forwards; opacity: 0; }
-                .animate-fade-in-delayed-3  { animation: fade-in 0.6s ease-out 0.6s forwards; opacity: 0; }
-                .animate-fade-in-delayed-4  { animation: fade-in 0.6s ease-out 0.7s forwards; opacity: 0; }
-                .animate-fade-in-delayed-5  { animation: fade-in 0.6s ease-out 0.8s forwards; opacity: 0; }
+                .animate-slide-up { animation: slide-up 0.7s cubic-bezier(0.22,1,0.36,1) forwards; }
+                .animate-fade-in-1 { animation: fade-in 0.5s ease-out 0.35s both; }
+                .animate-fade-in-2 { animation: fade-in 0.5s ease-out 0.45s both; }
+                .animate-fade-in-3 { animation: fade-in 0.5s ease-out 0.55s both; }
+                .animate-shake     { animation: shake 0.35s ease-in-out; }
             `}</style>
         </div>
     )

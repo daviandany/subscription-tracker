@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion';
+import { motion, type Variants, type Transition } from 'framer-motion';
 import {
     Eye,
     RefreshCcw,
@@ -16,14 +16,27 @@ import {
 } from 'lucide-react';
 
 /* ─── animation variants ─── */
-const fadeUp = {
-    hidden: { opacity: 0, y: 40 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: 'easeOut' } },
+const fadeUpTransition: Transition = {
+    duration: 0.6,
+    ease: 'easeOut',
 };
 
-const stagger = {
+const fadeUp: Variants = {
+    hidden: { opacity: 0, y: 40 },
+    visible: {
+        opacity: 1,
+        y: 0,
+        transition: fadeUpTransition,
+    },
+};
+
+const stagger: Variants = {
     hidden: {},
-    visible: { transition: { staggerChildren: 0.15 } },
+    visible: {
+        transition: {
+            staggerChildren: 0.15,
+        },
+    },
 };
 
 /* ─────────────────────────── NAVIGATION ─────────────────────────── */
