@@ -158,7 +158,7 @@ export default function LoginPage() {
                     </div>
 
                     {/* Sign up */}
-                    <a href="#" className="btn-secondary">
+                    <a href="/register" className="btn-secondary">
                         Criar conta gratuita
                     </a>
 
