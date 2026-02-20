@@ -30,3 +30,13 @@ export async function getByIdUser({ userId }) {
 
     return subscriptions
 }
+
+export async function filterCategories( { category } ) {
+    if (!category) {
+        throw new Error("Category is required")
+    }
+
+    return await Subscription.findAll({
+        where: { category }
+    })
+}
