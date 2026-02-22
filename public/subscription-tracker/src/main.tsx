@@ -4,6 +4,7 @@ import './index.css'
 import LandingPage from './pages/landingPage'
 import LoginPage from './pages/login'
 import CreateUserPage from './pages/createUser'
+import HomePage from './pages/home'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 
 createRoot(document.getElementById('root')!).render(
@@ -26,6 +27,12 @@ createRoot(document.getElementById('root')!).render(
           path='/register'
           element={
             <CreateUserPage />
+          }
+        />
+        <Route
+          path='/home'
+          element={
+            <HomePage />
           }
         />
       </Routes>
