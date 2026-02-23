@@ -27,12 +27,12 @@ export default function LoginPage() {
                 })
             })
             const data = await response.json()
-            console.log(data.token)
 
             if (!response.ok) {
                 throw new Error(data.error || "Erro ao fazer login")
             }
 
+            localStorage.setItem("token", data.token)
             navigate('/home')
 
         } catch (error: any) {

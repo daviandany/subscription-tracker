@@ -15,6 +15,6 @@ export default function auth(req, res, next){
         req.user = decoded.user;
         next()
     } catch (err) {
-        res.status(401).json({ msg: 'Token inválido.' })
+        res.status(401).json({ message: 'Token inválido.' })
     }
 }
