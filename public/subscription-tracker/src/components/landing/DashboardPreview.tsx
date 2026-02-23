@@ -9,7 +9,7 @@ export function DashboardPreview() {
                 <span className="h-3 w-3 rounded-full bg-red-400" />
                 <span className="h-3 w-3 rounded-full bg-yellow-400" />
                 <span className="h-3 w-3 rounded-full bg-green-400" />
-                <span className="ml-4 flex-1 rounded-md bg-dark-bg/60 px-3 py-1 text-xs text-text-muted">app.subtracker.io/dashboard</span>
+                <span className="ml-4 flex-1 rounded-md bg-dark-bg/60 px-3 py-1 text-xs text-text-muted">app.subtracker/dashboard</span>
             </div>
 
             {/* Dashboard content */}
