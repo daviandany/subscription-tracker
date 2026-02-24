@@ -1,15 +1,11 @@
 import jwt from 'jsonwebtoken'
 import { createUserService, getById, getAllUsers, login } from '../services/user.service.js';
+import { createUserSchema } from '../validators/user.schema.js';
 
 export async function createUser(req, res) {
     try {
-        const { name, email, password } = req.body
-
-        if (!name || !email || !password){
-            return res.status(400).json( {error : 'Corpo inválido'} )
-        }
-
-        const user = await createUserService( {name, email, password} )
+        const parsed = createUserSchema.parse(req.body)
+        const user = await createUserService(parsed)
 
         const { password: _, ...userWithoutPassword } = user.toJSON()
         res.status(201).json(userWithoutPassword)
@@ -18,7 +14,7 @@ export async function createUser(req, res) {
     }
 }
 
-export async function getUserById(req, res) {
+export async function getUserById(req, res, next) {
     try {
         const { id } = req.query
 
@@ -28,10 +24,13 @@ export async function getUserById(req, res) {
 
         const user = await getById( {id} )
         
-        const { password: _, ...userWithoutPassword } = user.toJSON()
-        res.status(200).json(userWithoutPassword)
+        res.status(201).json({
+            id: user.id,
+            name: user.name,
+            email: user.email
+        });
     } catch (error) {
-        res.status(400).json( {error: error.message} )
+        next(err);
     }
 }
 
