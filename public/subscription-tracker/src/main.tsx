@@ -5,6 +5,7 @@ import LandingPage from './pages/landing/landingPage'
 import LoginPage from './pages/login'
 import CreateUserPage from './pages/createUser'
 import HomePage from './pages/home'
+import SubscriptionsPage from './pages/subscriptions'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 
 createRoot(document.getElementById('root')!).render(
@@ -33,6 +34,12 @@ createRoot(document.getElementById('root')!).render(
           path='/home'
           element={
             <HomePage />
+          }
+        />
+        <Route
+          path='/subscriptions'
+          element={
+            <SubscriptionsPage />
           }
         />
       </Routes>

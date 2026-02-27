@@ -17,7 +17,7 @@ export default function CreateUserPage() {
     // Password strength validation
     const validatePassword = (pwd: string): string[] => {
         const issues: string[] = []
-        if (pwd.length < 6) issues.push("Mínimo de 6 caracteres")
+        if (pwd.length < 8) issues.push("Mínimo de 8 caracteres")
         if (!/[A-Z]/.test(pwd)) issues.push("Uma letra maiúscula")
         if (!/[0-9]/.test(pwd)) issues.push("Um número")
         return issues

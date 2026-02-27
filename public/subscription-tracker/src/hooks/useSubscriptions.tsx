@@ -1,31 +1,55 @@
-import { Play, Tv, Cloud } from "lucide-react";
-import type { Subscription } from "../types/dashboard";
+import { useEffect, useState } from "react";
 
-export function useSubscriptions(): Subscription[] {
-  return [
-    {
-      id: "1",
-      name: "Netflix",
-      category: "Entertainment",
-      price: 15.99,
-      daysUntilRenewal: 12,
-      logo: <Play className="w-6 h-6" />
-    },
-    {
-      id: "2",
-      name: "Disney+",
-      category: "Entertainment",
-      price: 10.99,
-      daysUntilRenewal: 5,
-      logo: <Tv className="w-6 h-6" />
-    },
-    {
-      id: "3",
-      name: "AWS",
-      category: "Infrastructure",
-      price: 45.50,
-      daysUntilRenewal: 22,
-      logo: <Cloud className="w-6 h-6" />
+export interface Subscription {
+  id: string;
+  userId: string;
+  price: number;
+  day: number;
+  platform: string;
+  category: string;
+}
+
+interface UseSubscriptionsReturn {
+  subscriptions: Subscription[];
+  loading: boolean;
+  error: string | null;
+  refetch: () => void;
+}
+
+export function useSubscriptions(): UseSubscriptionsReturn {
+  const [subscriptions, setSubscriptions] = useState<Subscription[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const fetchSubscriptions = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const token = localStorage.getItem("token"); // ajuste a chave se necessário
+
+      const res = await fetch("http://localhost:3000/api/subscriptions/get-by-user", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({}));
+        throw new Error(body.error ?? `Erro ${res.status}`);
+      }
+
+      const data: Subscription[] = await res.json();
+      setSubscriptions(data);
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : "Erro desconhecido");
+    } finally {
+      setLoading(false);
     }
-  ];
+  };
+
+  useEffect(() => {
+    fetchSubscriptions();
+  }, []);
+
+  return { subscriptions, loading, error, refetch: fetchSubscriptions };
 }

@@ -3,10 +3,11 @@ const subsRouter = express.Router();
 import auth from '../middlewares/jwt.js';
 import * as subscriptionController from '../controllers/subscription.controller.js';
 
-subsRouter.post('/subscriptions/create', auth, subscriptionController.createSubscriptionController)
-subsRouter.get('/subscriptions/get-by-id', auth, subscriptionController.getByIdController)
-subsRouter.get('/subscriptions/get-all', auth, subscriptionController.getAllSubscriptionController)
-subsRouter.get('/subscriptions/get-by-user', auth, subscriptionController.getByIdUserController)
+subsRouter.post('/create', auth, subscriptionController.createSubscriptionController)
+subsRouter.get('/get-by-id', auth, subscriptionController.getByIdController)
+subsRouter.get('/get-all', auth, subscriptionController.getAllSubscriptionController)
+subsRouter.get('/get-by-user', auth, subscriptionController.getByIdUserController)
+subsRouter.get('/filter', auth, subscriptionController.filterSubsByCategory)
 
 export default subsRouter
 
