@@ -6,6 +6,7 @@ import LoginPage from './pages/login'
 import CreateUserPage from './pages/createUser'
 import HomePage from './pages/home'
 import SubscriptionsPage from './pages/subscriptions'
+import AnalyticsPage from './pages/analytics'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 
 createRoot(document.getElementById('root')!).render(
@@ -40,6 +41,12 @@ createRoot(document.getElementById('root')!).render(
           path='/subscriptions'
           element={
             <SubscriptionsPage />
+          }
+        />
+        <Route
+          path='/analytics'
+          element={
+            <AnalyticsPage />
           }
         />
       </Routes>
