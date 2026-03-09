@@ -150,11 +150,17 @@ export function DashboardPreview() {
             <div className="pointer-events-none absolute -top-20 left-1/2 h-[300px] w-[500px] -translate-x-1/2 rounded-full bg-[radial-gradient(ellipse_at_center,rgba(139,92,246,0.12)_0%,transparent_70%)]" />
 
             {/* Browser chrome */}
-            <div className="flex items-center gap-2 border-b border-dark-border bg-dark-surface/80 px-4 py-3">
-                <span className="h-3 w-3 rounded-full bg-red-400" />
-                <span className="h-3 w-3 rounded-full bg-yellow-400" />
-                <span className="h-3 w-3 rounded-full bg-green-400" />
-                <span className="ml-4 flex-1 rounded-md bg-dark-bg/60 px-3 py-1 text-xs text-text-muted">app.subtracker.io/dashboard</span>
+            <div className="flex items-center gap-2 border-b border-dark-border bg-dark-surface/80 px-4 py-3 backdrop-blur-sm">
+                <span className="h-3 w-3 rounded-full bg-red-400/70" />
+                <span className="h-3 w-3 rounded-full bg-yellow-400/70" />
+                <span className="h-3 w-3 rounded-full bg-green-400/70" />
+                <span className="ml-4 flex-1 rounded-md bg-dark-bg/60 px-3 py-1 text-xs text-text-muted">
+                    app.subtracker.io/dashboard
+                </span>
+                <div className="flex items-center gap-1 text-xs text-green-accent">
+                    <Zap className="h-3 w-3" />
+                    <span className="hidden sm:inline">Seguro</span>
+                </div>
             </div>
 
             {/* Dashboard content */}
