@@ -30,7 +30,7 @@ export async function getUserById(req, res, next) {
             email: user.email
         });
     } catch (error) {
-        next(err);
+        next(error);
     }
 }
 

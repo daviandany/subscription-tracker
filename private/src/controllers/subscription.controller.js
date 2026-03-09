@@ -1,4 +1,4 @@
-import { createSubscriptionService, getById, getAllSubscription, getByIdUser } from '../services/subscription.service.js'
+import { createSubscriptionService, getById, getAllSubscription, getByIdUser, filterCategories } from '../services/subscription.service.js'
 
 export async function createSubscriptionController(req, res) {
     try {
@@ -47,10 +47,10 @@ export async function getAllSubscriptionController(req, res) {
 
 export async function getByIdUserController(req, res) {
     try {
-        const { userId } = req.query;
+        const userId = req.user.id;
         
         if (!userId) {
-            return res.status(400).json( { error: "id inválida" } )
+            return res.status(400).json( { error: `id inválida ${userId}` } )
         }
 
         let subs = await getByIdUser( { userId } )
@@ -62,3 +62,19 @@ export async function getByIdUserController(req, res) {
     }
 }
 
+export async function filterSubsByCategory(req, res) {
+    try {
+        const { category } = req.query;
+
+        if(!category){
+            return res.status(400).json( { error: "query inválida" } )
+        }
+
+        let subs = await filterCategories( { category } )
+        res.status(200).json(subs)
+    } catch (error) {
+        return res.status(500).json({
+            error: error.message
+        })
+    }
+}

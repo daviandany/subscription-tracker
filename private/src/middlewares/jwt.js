@@ -1,20 +1,24 @@
-import jwt from 'jsonwebtoken'
+import jwt from 'jsonwebtoken';
 
-export default function auth(req, res, next){
-
+export default function auth(req, res, next) {
     const authHeader = req.header('Authorization');
-    const token = authHeader.split(" ")[1];
 
-    if (!token) {
-        return res.status(401).json({ message: "Acesso negado. Token não encontrado" })
+    if (!authHeader) {
+        return res.status(401).json({ message: 'Acesso negado. Token não encontrado' });
     }
+
+    const parts = authHeader.split(' ');
+    if (parts.length !== 2) {
+        return res.status(401).json({ message: 'Erro no token' });
+    }
+
+    const token = parts[1];
 
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
-
         req.user = decoded.user;
-        next()
+        next();
     } catch (err) {
-        res.status(401).json({ msg: 'Token inválido.' })
+        res.status(401).json({ message: 'Token inválido' });
     }
 }
