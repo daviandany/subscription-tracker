@@ -155,7 +155,7 @@ export function DashboardPreview() {
                 <span className="h-3 w-3 rounded-full bg-yellow-400/70" />
                 <span className="h-3 w-3 rounded-full bg-green-400/70" />
                 <span className="ml-4 flex-1 rounded-md bg-dark-bg/60 px-3 py-1 text-xs text-text-muted">
-                    app.subtracker.io/dashboard
+                    app.subtracker/dashboard
                 </span>
                 <div className="flex items-center gap-1 text-xs text-green-accent">
                     <Zap className="h-3 w-3" />
