@@ -4,13 +4,15 @@ import SummaryCard from "../components/dashboard/SummaryCard";
 import RecentActivity from "../components/dashboard/RecentActivity";
 import SubscriptionCard from "../components/dashboard/SubscriptionCard";
 import AnalyticsSidebar from "../components/dashboard/AnalyticsSidebar";
+import AddSubscriptionModal from "../components/subscriptions/AddSubscriptionModal";
 import { navigationItems } from "../config/navigation";
 import { useDashboardMetrics } from "../hooks/useDashboardMetrics";
 import { useSubscriptions } from "../hooks/useSubscriptions";
-import { Loader2, AlertCircle, ChevronDown, ChevronUp } from "lucide-react";
+import { Loader2, AlertCircle, ChevronDown, ChevronUp, Plus } from "lucide-react";
 
 export default function HomePage() {
   const [showAll, setShowAll] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
   const metrics = useDashboardMetrics();
   const { subscriptions, loading, error, refetch } = useSubscriptions();
 
@@ -25,8 +27,12 @@ export default function HomePage() {
             <h1 className="text-3xl font-bold text-white mb-2">Dashboard</h1>
             <p className="text-gray-400">Welcome back, Davi. Here's your subscription overview.</p>
           </div>
-          <button className="px-6 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-semibold transition-all shadow-lg shadow-purple-500/20 active:scale-95">
-            + New Subscription
+          <button
+            onClick={() => setModalOpen(true)}
+            className="flex items-center gap-2 px-6 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-semibold transition-all shadow-lg shadow-purple-500/20 active:scale-95"
+          >
+            <Plus className="w-4 h-4" />
+            Nova Assinatura
           </button>
         </div>
 
@@ -108,6 +114,12 @@ export default function HomePage() {
           </div>
         </div>
       </div>
+      {/* Add Subscription Modal */}
+      <AddSubscriptionModal
+        isOpen={modalOpen}
+        onClose={() => setModalOpen(false)}
+        onSuccess={refetch}
+      />
     </DashboardLayout>
   );
 }
