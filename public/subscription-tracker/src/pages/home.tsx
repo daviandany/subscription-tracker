@@ -8,7 +8,7 @@ import AddSubscriptionModal from "../components/subscriptions/AddSubscriptionMod
 import { navigationItems } from "../config/navigation";
 import { useDashboardMetrics } from "../hooks/useDashboardMetrics";
 import { useSubscriptions } from "../hooks/useSubscriptions";
-import { Loader2, AlertCircle, ChevronDown, ChevronUp, Plus } from "lucide-react";
+import { Loader2, AlertCircle, ChevronDown, ChevronUp, Plus } from "lucide-react"
 
 export default function HomePage() {
   const [showAll, setShowAll] = useState(false);
