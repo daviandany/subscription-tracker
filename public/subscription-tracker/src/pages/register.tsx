@@ -4,7 +4,7 @@ import { ArrowRight, Shield, User, Lock, Mail, AlertCircle, CheckCircle2 } from 
 import { AuthLayout } from "../components/auth/AuthLayout"
 import { AuthCard } from "../components/auth/AuthCard"
 
-export default function CreateUserPage() {
+export default function RegisterPage() {
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
